@@ -23,10 +23,19 @@ function Room() {
     )
   }
 
-  return <CallRoom initialAudioEnabled={initialAudio} initialVideoEnabled={initialVideo} />
+  return (
+    <CallRoom
+      initialAudioEnabled={initialAudio}
+      initialVideoEnabled={initialVideo}
+    />
+  )
 }
 
-function PreJoinDialog({ onJoin }: { onJoin: (audio: boolean, video: boolean) => void }) {
+function PreJoinDialog({
+  onJoin,
+}: {
+  onJoin: (audio: boolean, video: boolean) => void
+}) {
   const dialogRef = useRef<HTMLDialogElement>(null)
   const [audioEnabled, setAudioEnabled] = useState(true)
   const [videoEnabled, setVideoEnabled] = useState(true)
@@ -38,7 +47,10 @@ function PreJoinDialog({ onJoin }: { onJoin: (audio: boolean, video: boolean) =>
     let stream: MediaStream
     const getMedia = async () => {
       try {
-        stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true })
+        stream = await navigator.mediaDevices.getUserMedia({
+          video: true,
+          audio: true,
+        })
         setPreviewStream(stream)
       } catch {
         setPreviewStream(null)
@@ -69,19 +81,27 @@ function PreJoinDialog({ onJoin }: { onJoin: (audio: boolean, video: boolean) =>
     <div className="flex h-screen items-center justify-center bg-neutral-950">
       <dialog
         ref={dialogRef}
-        className="m-auto w-[360px] rounded-2xl bg-neutral-900 p-6 text-white backdrop:bg-black/70"
+        className="m-auto w-90 rounded-2xl bg-neutral-900 p-6 text-white backdrop:bg-black/70"
       >
-        <h2 className="mb-4 text-center text-lg font-semibold">Ready to join?</h2>
+        <h2 className="mb-4 text-center text-lg font-semibold">
+          Ready to join?
+        </h2>
 
         <div className="mb-4 overflow-hidden rounded-xl bg-neutral-800">
-          <VideoTile stream={videoEnabled ? previewStream : null} muted label="You" />
+          <VideoTile
+            stream={videoEnabled ? previewStream : null}
+            muted
+            label="You"
+          />
         </div>
 
         <div className="mb-6 flex items-center justify-center gap-3">
           <button
             onClick={() => setAudioEnabled((a) => !a)}
             className={`rounded-full p-3 text-white transition-colors ${
-              audioEnabled ? 'bg-neutral-700 hover:bg-neutral-600' : 'bg-red-600 hover:bg-red-500'
+              audioEnabled
+                ? 'bg-neutral-700 hover:bg-neutral-600'
+                : 'bg-red-600 hover:bg-red-500'
             }`}
           >
             {audioEnabled ? <Mic size={20} /> : <MicOff size={20} />}
@@ -89,7 +109,9 @@ function PreJoinDialog({ onJoin }: { onJoin: (audio: boolean, video: boolean) =>
           <button
             onClick={() => setVideoEnabled((v) => !v)}
             className={`rounded-full p-3 text-white transition-colors ${
-              videoEnabled ? 'bg-neutral-700 hover:bg-neutral-600' : 'bg-red-600 hover:bg-red-500'
+              videoEnabled
+                ? 'bg-neutral-700 hover:bg-neutral-600'
+                : 'bg-red-600 hover:bg-red-500'
             }`}
           >
             {videoEnabled ? <Video size={20} /> : <VideoOff size={20} />}
@@ -114,8 +136,14 @@ function CallRoom({
   initialAudioEnabled: boolean
   initialVideoEnabled: boolean
 }) {
-  const { localStream, peers, isAudioEnabled, isVideoEnabled, toggleAudio, toggleVideo } =
-    useWebRTC({ initialAudioEnabled, initialVideoEnabled })
+  const {
+    localStream,
+    peers,
+    isAudioEnabled,
+    isVideoEnabled,
+    toggleAudio,
+    toggleVideo,
+  } = useWebRTC({ initialAudioEnabled, initialVideoEnabled })
 
   return (
     <div className="flex h-screen flex-col bg-neutral-950">
@@ -130,7 +158,9 @@ function CallRoom({
         <button
           onClick={toggleAudio}
           className={`rounded-full p-3 text-white transition-colors ${
-            isAudioEnabled ? 'bg-neutral-700 hover:bg-neutral-600' : 'bg-red-600 hover:bg-red-500'
+            isAudioEnabled
+              ? 'bg-neutral-700 hover:bg-neutral-600'
+              : 'bg-red-600 hover:bg-red-500'
           }`}
         >
           {isAudioEnabled ? <Mic size={20} /> : <MicOff size={20} />}
@@ -138,7 +168,9 @@ function CallRoom({
         <button
           onClick={toggleVideo}
           className={`rounded-full p-3 text-white transition-colors ${
-            isVideoEnabled ? 'bg-neutral-700 hover:bg-neutral-600' : 'bg-red-600 hover:bg-red-500'
+            isVideoEnabled
+              ? 'bg-neutral-700 hover:bg-neutral-600'
+              : 'bg-red-600 hover:bg-red-500'
           }`}
         >
           {isVideoEnabled ? <Video size={20} /> : <VideoOff size={20} />}

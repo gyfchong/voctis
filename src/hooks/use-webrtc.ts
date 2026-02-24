@@ -148,7 +148,7 @@ export function useWebRTC({
 
           // Determine if this is an SDP or ICE candidate
           if ('sdp' in payload) {
-            const sdp = payload as RTCSessionDescriptionInit
+            const sdp = payload
 
             if (sdp.type === 'offer') {
               // Incoming offer — create connection and send answer
@@ -174,10 +174,10 @@ export function useWebRTC({
             if (state) {
               if (state.remoteDescriptionSet) {
                 await state.connection.addIceCandidate(
-                  new RTCIceCandidate(payload as RTCIceCandidateInit),
+                  new RTCIceCandidate(payload),
                 )
               } else {
-                state.candidateBuffer.push(payload as RTCIceCandidateInit)
+                state.candidateBuffer.push(payload)
               }
             }
           }

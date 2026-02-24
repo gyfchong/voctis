@@ -11,7 +11,7 @@
     "build": "vite build",
     "preview": "pnpm dlx wrangler dev",
     "test": "vitest run",
-    "lint": "eslint",
+    "lint": "eslint . --ext .ts,.tsx",
     "format": "prettier --check .",
     "check": "prettier --write . && eslint --fix",
     "deploy": "pnpm dlx wrangler deploy"
@@ -37,6 +37,7 @@
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^5.1.4",
+    "eslint": "^10.0.2",
     "jsdom": "^28.1.0",
     "prettier": "^3.8.1",
     "typescript": "^5.9.3",
