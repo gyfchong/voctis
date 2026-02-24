@@ -1,0 +1,20 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "noctis",
+  "main": "worker/src/index.ts",
+  "compatibility_date": "2025-09-27",
+  "observability": {
+    "enabled": true,
+  },
+  "assets": {
+    "directory": "dist",
+  },
+  "routes": [
+    { "pattern": "voctis.lumanlabs.com/*", "zone_name": "lumanlabs.com" },
+  ],
+  "compatibility_flags": ["nodejs_compat"],
+  "durable_objects": {
+    "bindings": [{ "name": "SIGNALING_ROOM", "class_name": "SignalingRoom" }],
+  },
+  "migrations": [{ "tag": "v1", "new_sqlite_classes": ["SignalingRoom"] }],
+}

@@ -15,6 +15,14 @@ const config = defineConfig({
     tanstackRouter({ target: 'react', autoCodeSplitting: true }),
     viteReact(),
   ],
+  server: {
+    proxy: {
+      '/websocket': {
+        target: 'ws://localhost:8787',
+        ws: true,
+      },
+    },
+  },
 })
 
 export default config
