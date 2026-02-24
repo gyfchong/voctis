@@ -60,7 +60,7 @@ function PreJoinDialog({
     getMedia()
 
     return () => {
-      stream?.getTracks().forEach((t) => t.stop())
+      stream.getTracks().forEach((t) => t.stop())
     }
   }, [])
 
