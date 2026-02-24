@@ -7,14 +7,14 @@
   },
   "scripts": {
     "dev": "vite dev --port 3000",
-    "dev:worker": "cd worker && npx wrangler dev",
+    "dev:worker": "cd worker && pnpm dlx wrangler dev",
     "build": "vite build",
-    "preview": "pnpm run build && wrangler dev",
+    "preview": "pnpm dlx wrangler dev",
     "test": "vitest run",
     "lint": "eslint",
     "format": "prettier --check .",
     "check": "prettier --write . && eslint --fix",
-    "deploy": "pnpm run build && wrangler deploy"
+    "deploy": "pnpm dlx wrangler deploy"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.2.1",
