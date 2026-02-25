@@ -49,7 +49,10 @@ export class SignalingRoom extends DurableObject<Env> {
     return new Response(null, { status: 101, webSocket: client })
   }
 
-  async webSocketMessage(ws: WebSocket, message: string | ArrayBuffer): Promise<void> {
+  async webSocketMessage(
+    ws: WebSocket,
+    message: string | ArrayBuffer,
+  ): Promise<void> {
     if (typeof message !== 'string') return
 
     let data: ClientMessage
@@ -74,7 +77,7 @@ export class SignalingRoom extends DurableObject<Env> {
       return
     }
 
-    if (data.type !== 'signal' || !data.to) return
+    if (!data.to) return
 
     // Find the target peer's WebSocket
     for (const peer of this.ctx.getWebSockets()) {
