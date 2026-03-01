@@ -4,7 +4,11 @@ type ServerMessage =
   | { type: 'welcome'; id: string; peers: string[] }
   | { type: 'peer-joined'; peerId: string }
   | { type: 'peer-left'; peerId: string }
-  | { type: 'signal'; from: string; payload: RTCSessionDescriptionInit | RTCIceCandidateInit }
+  | {
+      type: 'signal'
+      from: string
+      payload: RTCSessionDescriptionInit | RTCIceCandidateInit
+    }
 
 const RTC_CONFIG: RTCConfiguration = {
   iceServers: [{ urls: 'stun:stun.l.google.com:19302' }],
@@ -153,7 +157,9 @@ export function useWebRTC({
             if (sdp.type === 'offer') {
               // Incoming offer — create connection and send answer
               const state = createPeerConnection(from)
-              await state.connection.setRemoteDescription(new RTCSessionDescription(sdp))
+              await state.connection.setRemoteDescription(
+                new RTCSessionDescription(sdp),
+              )
               state.remoteDescriptionSet = true
               await flushCandidates(state)
               const answer = await state.connection.createAnswer()
@@ -163,7 +169,9 @@ export function useWebRTC({
               // Incoming answer — set remote description on existing connection
               const state = peersRef.current.get(from)
               if (state) {
-                await state.connection.setRemoteDescription(new RTCSessionDescription(sdp))
+                await state.connection.setRemoteDescription(
+                  new RTCSessionDescription(sdp),
+                )
                 state.remoteDescriptionSet = true
                 await flushCandidates(state)
               }
@@ -190,7 +198,13 @@ export function useWebRTC({
         }
       }
     },
-    [createPeerConnection, sendSignal, removePeer, flushCandidates, updatePeersState],
+    [
+      createPeerConnection,
+      sendSignal,
+      removePeer,
+      flushCandidates,
+      updatePeersState,
+    ],
   )
 
   useEffect(() => {
@@ -199,7 +213,10 @@ export function useWebRTC({
 
     const init = async () => {
       try {
-        stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true })
+        stream = await navigator.mediaDevices.getUserMedia({
+          video: true,
+          audio: true,
+        })
       } catch {
         // Fall back to no media if permissions denied
         stream = new MediaStream()
@@ -256,5 +273,12 @@ export function useWebRTC({
     setIsVideoEnabled((prev) => !prev)
   }, [])
 
-  return { localStream, peers, isAudioEnabled, isVideoEnabled, toggleAudio, toggleVideo }
+  return {
+    localStream,
+    peers,
+    isAudioEnabled,
+    isVideoEnabled,
+    toggleAudio,
+    toggleVideo,
+  }
 }
